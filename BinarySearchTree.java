@@ -13,18 +13,16 @@ class Node {
 	}
 }
 
-public class BinaryTree {
+public class BinarySearchTree {
     static Node root = null;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter n:");
         int n = sc.nextInt();
-        int arr[] = new int[n];
         System.out.println("Enter the tree nodes");
         for (int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
+            root = InsertNode(root, sc.nextInt());
         }
-        root = InsertNode(arr);
         System.out.println("Inorder:");
         inOrder(root);
         System.out.println("\nPreorder:");
@@ -33,34 +31,17 @@ public class BinaryTree {
         postOrder(root);
     }
 
-    public static Node InsertNode(int[] arr) {
-        if (arr == null || arr.length == 0) {
-            return null;
+    static Node InsertNode(Node root, int data) {
+        if (root == null) {
+            root = new Node(data);
+            return root;
         }
+        if (data < root.data) {
+            root.left = InsertNode(root.left, data);
+        } else {
+            root.right = InsertNode(root.right, data);
 
-        Node root = new Node(arr[0]);
-        java.util.Queue<Node> queue = new java.util.LinkedList<>();
-        queue.add(root);
-        int i = 1;
-
-        while (!queue.isEmpty() && i < arr.length) {
-            Node node = queue.poll();
-
-            // Add left child if it exists
-            if (arr[i] != -1) { // Assuming -1 represents null or no child
-                node.left = new Node(arr[i]);
-                queue.add(node.left);
-            }
-            i++;
-
-            // Add right child if it exists
-            if (i < arr.length && arr[i] != -1) {
-                node.right = new Node(arr[i]);
-                queue.add(node.right);
-            }
-            i++;
         }
-
         return root;
     }
 
